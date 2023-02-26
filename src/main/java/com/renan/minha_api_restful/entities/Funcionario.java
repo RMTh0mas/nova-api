@@ -19,6 +19,7 @@ import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 import com.renan.minha_api_restful.enums.PerfilEnum;
+import com.renan.minha_api_restful.utils.SenhaUtils;
 
 @Entity
 @Table(name = "funcionario")
@@ -37,6 +38,7 @@ public class Funcionario {
     private Date dataAtualizacao;
     private Empresa empresa;
     private List<Lancamento> Lancamentos;
+    private SenhaUtils encript;
 
     public Funcionario(){
 
@@ -140,7 +142,7 @@ public class Funcionario {
     }
 
     public void setSenha(String senha) {
-        this.senha = senha;
+        this.senha = encript.gerarBCript(senha);
     }
 
     @ManyToOne(fetch = FetchType.EAGER)

@@ -74,7 +74,7 @@ public class Lancamento {
         this.localizacao = localizacao;
     }
 
-    @Column(name = "data_criacao", nullable = false)
+    @Column(name = "data_criacao", nullable = true)
     public Date getDataCriacao() {
         return dataCriacao;
     }
@@ -83,7 +83,7 @@ public class Lancamento {
         this.dataCriacao = dataCriacao;
     }
 
-    @Column(name = "data_atualizacao", nullable = false)
+    @Column(name = "data_atualizacao", nullable = true)
     public Date getDataAtualizacao() {
         return dataAtualizacao;
     }
