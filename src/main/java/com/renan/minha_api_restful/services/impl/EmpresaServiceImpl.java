@@ -1,11 +1,15 @@
 package com.renan.minha_api_restful.services.impl;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renan.minha_api_restful.dtos.EmpresaDto;
 import com.renan.minha_api_restful.entities.Empresa;
+import com.renan.minha_api_restful.mappers.EmpresaMapper;
 import com.renan.minha_api_restful.repositories.EmpresaRepository;
 import com.renan.minha_api_restful.services.EmpresaService;
 
@@ -15,36 +19,48 @@ public class EmpresaServiceImpl implements EmpresaService {
     @Autowired
     private EmpresaRepository repository;
 
+    @Autowired
+    private EmpresaMapper mapper;
+
     @Override
-    public List<Empresa> getAll() {
-        return repository.findAll();
+    public List<EmpresaDto> getAll() {
+        List<Empresa> listaEmpresa = repository.findAll();
+        return mapper.mapListEmpresa(listaEmpresa);
     }
 
     @Override
-    public Empresa save(Empresa empresa) {
-        return repository.save(empresa);
+    public EmpresaDto save(EmpresaDto empresadto) {
+        Empresa empresa = mapper.mapEmpresaDTO(empresadto);
+        empresa = repository.save(empresa);
+        return mapper.mapEmpresa(empresa);
     }
 
     @Override
-    public Empresa findById(Long id) {
-        return repository.findOne(id);
+    public EmpresaDto findById(Long id) {
+        Empresa empresa = repository.findOne(id);
+        return mapper.mapEmpresa(empresa);
     }
 
     @Override
-    public Empresa findByCnpj(String cnpj) {
-        return repository.findByCnpj(cnpj);
+    public EmpresaDto findByCnpj(String cnpj) {
+        Empresa empresa = repository.findByCnpj(cnpj);
+        return mapper.mapEmpresa(empresa);
     }
 
     @Override
-    public Empresa delete(Long id) {
-        Empresa empresaDeletada = repository.findOne(id);
-        repository.delete(id);
-        return empresaDeletada;
+    public EmpresaDto delete(Long id) {
+        Empresa empresa = repository.findOne(id);
+        repository.delete(empresa);
+        return mapper.mapEmpresa(empresa);
+
     }
 
     @Override
-    public List<Empresa> getByRazaoSocial(String razaoSocial) {
-        return repository.findByRazaoSocialIgnoreCaseContaining(razaoSocial);
+    public List<EmpresaDto> getByRazaoSocial(String razaoSocial) {
+        List<Empresa> empresa = repository.findByRazaoSocialIgnoreCaseContaining(razaoSocial);
+
+        return mapper.mapListEmpresa(empresa);
+
     }
     
 }

@@ -1,30 +1,16 @@
-package com.renan.minha_api_restful.entities;
+package com.renan.minha_api_restful.dtos;
 
 import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
-import javax.persistence.Table;
+import com.renan.minha_api_restful.entities.Empresa;
+import com.renan.minha_api_restful.entities.Lancamento;
 import com.renan.minha_api_restful.enums.PerfilEnum;
 import com.renan.minha_api_restful.utils.SenhaUtils;
 
-@Entity
-@Table(name = "funcionario")
-public class Funcionario {
-    
+public class FuncionarioDto {
+
     private Long id;
     private String nome;
     private String email;
@@ -40,12 +26,6 @@ public class Funcionario {
     private List<Lancamento> lancamentos;
     private SenhaUtils encript;
 
-    public Funcionario(){
-
-    }
-
-    @Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
     public Long getId() {
         return id;
     }
@@ -54,7 +34,6 @@ public class Funcionario {
         this.id = id;
     }
 
-    @Column(name = "nome", nullable = false)
     public String getNome() {
         return nome;
     }
@@ -63,7 +42,6 @@ public class Funcionario {
         this.nome = nome;
     }
 
-    @Column(name = "email", nullable = false)
     public String getEmail() {
         return email;
     }
@@ -72,7 +50,6 @@ public class Funcionario {
         this.email = email;
     }
 
-    @Column(name = "cpf", nullable = false)
     public String getCpf() {
         return cpf;
     }
@@ -81,7 +58,6 @@ public class Funcionario {
         this.cpf = cpf;
     }
 
-    @Column(name = "valor_hora", nullable = true)
     public BigDecimal getValorHora() {
         return valorHora;
     }
@@ -90,7 +66,6 @@ public class Funcionario {
         this.valorHora = valorHora;
     }
 
-    @Column(name = "qtd_horas_trabalhadas", nullable = true)
     public Float getQtdHorasTrabalhoDia() {
         return qtdHorasTrabalhoDia;
     }
@@ -99,7 +74,6 @@ public class Funcionario {
         this.qtdHorasTrabalhoDia = qtdHorasTrabalhoDia;
     }
 
-    @Column(name = "qtd_horas_alomoco", nullable = true)
     public Float getQtdHorasAlmoco() {
         return qtdHorasAlmoco;
     }
@@ -107,9 +81,7 @@ public class Funcionario {
     public void setQtdHorasAlmoco(Float qtdHorasAlmoco) {
         this.qtdHorasAlmoco = qtdHorasAlmoco;
     }
-    
-    @Enumerated(EnumType.STRING)
-    @Column(name = "perfil", nullable = false)
+
     public PerfilEnum getPerfil() {
         return perfil;
     }
@@ -118,7 +90,6 @@ public class Funcionario {
         this.perfil = perfil;
     }
 
-    @Column(name = "data_criacao", nullable = false)
     public Date getData_criacao() {
         return dataCriacao;
     }
@@ -127,7 +98,6 @@ public class Funcionario {
         this.dataCriacao = data_criacao;
     }
 
-    @Column(name = "data_atualizacao", nullable = false)
     public Date getData_atualizacao() {
         return dataAtualizacao;
     }
@@ -136,7 +106,6 @@ public class Funcionario {
         this.dataAtualizacao = data_atualizacao;
     }
 
-    @Column(name = "senha", nullable = false)
     public String getSenha() {
         return senha;
     }
@@ -145,7 +114,6 @@ public class Funcionario {
         this.senha = encript.gerarBCript(senha);
     }
 
-    @ManyToOne(fetch = FetchType.EAGER)
     public Empresa getEmpresa() {
         return empresa;
     }
@@ -154,7 +122,6 @@ public class Funcionario {
         this.empresa = empresa;
     }
 
-    @OneToMany(mappedBy = "funcionario", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     public List<Lancamento> getLancamentos() {
         return lancamentos;
     }
@@ -162,27 +129,6 @@ public class Funcionario {
     public void setLancamentos(List<Lancamento> lancamentos) {
         lancamentos = lancamentos;
     }
-
-    @PreUpdate
-    public void preUpdate(){
-        dataAtualizacao = new Date();
-    }
-
-    @PrePersist
-    public void prePersist(){
-        final Date atual = new Date();
-        dataCriacao = atual;
-        dataAtualizacao = atual;
-    }
-
-    @Override
-    public String toString() {
-        return "Funcionario [id=" + id + ", nome=" + nome + ", email=" + email + ", senha=" + senha + ", cpf=" + cpf
-                + ", valorHora=" + valorHora + ", qtdHorasTrabalhoDia=" + qtdHorasTrabalhoDia + ", qtdHorasAlmoco="
-                + qtdHorasAlmoco + ", perfil=" + perfil + ", dataCriacao=" + dataCriacao + ", dataAtualizacao="
-                + dataAtualizacao + ", empresa=" + empresa + "]";
-    }
-
     
     
 }

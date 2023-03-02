@@ -2,20 +2,20 @@ package com.renan.minha_api_restful.services;
 
 import java.util.List;
 
-import com.renan.minha_api_restful.entities.Funcionario;
+import com.renan.minha_api_restful.dtos.FuncionarioDto;
 
 public interface FuncionarioService {
 
-    public List<Funcionario> getAll();
+    public List<FuncionarioDto> getAll();
 
-    public Funcionario save(Funcionario funcionario);
+    public FuncionarioDto save(FuncionarioDto funcionario);
 
-    public Funcionario findById(Long id);
+    public FuncionarioDto findById(Long id);
 
-    public Funcionario findByCpf(String cpf);
+    public FuncionarioDto findByCpf(String cpf);
 
-    public Funcionario delete(Long id);
+    public FuncionarioDto delete(Long id);
 
-    public List<Funcionario> getByName(String nome);
+    public List<FuncionarioDto> getByName(String nome);
     
 }

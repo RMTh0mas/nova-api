@@ -3,20 +3,20 @@ package com.renan.minha_api_restful.services;
 import java.util.Date;
 import java.util.List;
 
-import com.renan.minha_api_restful.entities.Lancamento;
+import com.renan.minha_api_restful.dtos.LancamentoDto;
 
 public interface LancamentoService {
 
-    public List<Lancamento> getAll();
+    public List<LancamentoDto> getAll();
 
-    public Lancamento save(Lancamento lancamento);
+    public LancamentoDto save(LancamentoDto lancamento);
 
-    public Lancamento findById(Long id);
+    public LancamentoDto findById(Long id);
 
-    public List<Lancamento> findByDate(Date data);
+    public List<LancamentoDto> findByDate(Date data);
 
-    public Lancamento delete(Long id);
+    public LancamentoDto delete(Long id);
 
-    public List<Lancamento> getByDescricao(String descricao);
+    public List<LancamentoDto> getByDescricao(String descricao);
     
 }

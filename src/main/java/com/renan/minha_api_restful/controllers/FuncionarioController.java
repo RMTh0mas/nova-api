@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.renan.minha_api_restful.entities.Funcionario;
+import com.renan.minha_api_restful.dtos.FuncionarioDto;
 import com.renan.minha_api_restful.services.FuncionarioService;
 
 @RestController
@@ -25,67 +25,67 @@ public class FuncionarioController {
     private FuncionarioService service;
     
     @GetMapping
-    public ResponseEntity<List<Funcionario>> getAll() {
-        List<Funcionario> listaFuncionario = service.getAll();
-        return new ResponseEntity<List<Funcionario>>(listaFuncionario, HttpStatus.OK);
+    public ResponseEntity<List<FuncionarioDto>> getAll() {
+        List<FuncionarioDto> listaFuncionarioDto = service.getAll();
+        return new ResponseEntity<List<FuncionarioDto>>(listaFuncionarioDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Funcionario> getById(@PathVariable("id") long id) {
+    public ResponseEntity<FuncionarioDto> getById(@PathVariable("id") long id) {
 
-        Funcionario funcionario = service.findById(id);
-        return new ResponseEntity<Funcionario>(funcionario, HttpStatus.OK);
+        FuncionarioDto funcionarioDto = service.findById(id);
+        return new ResponseEntity<FuncionarioDto>(funcionarioDto, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Funcionario> insertEmpresa(@RequestBody Funcionario funcionario) {
-        if (funcionario.getId() == 0) {
-            service.save(funcionario);
-            return new ResponseEntity<Funcionario>(funcionario, HttpStatus.CREATED);
+    public ResponseEntity<FuncionarioDto> insertEmpresa(@RequestBody FuncionarioDto funcionarioDto) {
+        if (funcionarioDto.getId() == 0) {
+            service.save(funcionarioDto);
+            return new ResponseEntity<FuncionarioDto>(funcionarioDto, HttpStatus.CREATED);
         }
         return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<List<Funcionario>> getByNome(@PathVariable("nome") String nome) {
-        List<Funcionario> listaFuncionarios = service.getByName(nome);
-        return new ResponseEntity<List<Funcionario>>(listaFuncionarios, HttpStatus.OK);
+    public ResponseEntity<List<FuncionarioDto>> getByNome(@PathVariable("nome") String nome) {
+        List<FuncionarioDto> listaFuncionariosDto = service.getByName(nome);
+        return new ResponseEntity<List<FuncionarioDto>>(listaFuncionariosDto, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Funcionario> update(@PathVariable("id") long id,
-            @RequestBody Funcionario funcionario) {
+    public ResponseEntity<FuncionarioDto> update(@PathVariable("id") long id,
+            @RequestBody FuncionarioDto funcionarioDto) {
 
-        Funcionario funcionarioAntigo = service.findById(id);
-        if (funcionarioAntigo == null) {
+        FuncionarioDto funcionarioAntigoDto = service.findById(id);
+        if (funcionarioAntigoDto == null) {
             return ResponseEntity.notFound().build();
         }
         
-        funcionarioAntigo.setNome(funcionario.getNome());
-        funcionarioAntigo.setCpf(funcionario.getCpf());
-        funcionarioAntigo.setEmail(funcionario.getEmail());
-        funcionarioAntigo.setEmpresa(funcionario.getEmpresa());
-        funcionarioAntigo.setData_criacao(funcionario.getData_criacao());
-        funcionarioAntigo.setData_atualizacao(funcionario.getData_atualizacao());
-        funcionarioAntigo.setPerfil(funcionario.getPerfil());
-        funcionarioAntigo.setQtdHorasAlmoco(funcionario.getQtdHorasAlmoco());
-        funcionarioAntigo.setQtdHorasTrabalhoDia(funcionario.getQtdHorasTrabalhoDia());
-        
-        service.save(funcionarioAntigo);
+        funcionarioAntigoDto.setNome(funcionarioDto.getNome());
+        funcionarioAntigoDto.setCpf(funcionarioDto.getCpf());
+        funcionarioAntigoDto.setEmail(funcionarioDto.getEmail());
+        funcionarioAntigoDto.setData_atualizacao(funcionarioDto.getData_atualizacao());
+        funcionarioAntigoDto.setData_criacao(funcionarioDto.getData_criacao());
+        funcionarioAntigoDto.setEmpresa(funcionarioDto.getEmpresa());
+        funcionarioAntigoDto.setLancamentos(funcionarioDto.getLancamentos());
+        funcionarioAntigoDto.setQtdHorasAlmoco(funcionarioDto.getQtdHorasAlmoco());
+        funcionarioAntigoDto.setQtdHorasTrabalhoDia(funcionarioDto.getQtdHorasTrabalhoDia());
 
-        return new ResponseEntity<Funcionario>(funcionarioAntigo, HttpStatus.OK);
+        service.save(funcionarioAntigoDto);
+
+        return new ResponseEntity<FuncionarioDto>(funcionarioAntigoDto, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Funcionario> delete(@PathVariable("id") long id) {
+    public ResponseEntity<FuncionarioDto> delete(@PathVariable("id") long id) {
 
-        Funcionario funcionarioAntigo = service.findById(id);
-        if (funcionarioAntigo == null) {
+        FuncionarioDto funcionarioAntigoDto = service.findById(id);
+        if (funcionarioAntigoDto == null) {
             return ResponseEntity.notFound().build();
         }
-        service.delete(funcionarioAntigo.getId());
+        service.delete(funcionarioAntigoDto.getId());
 
-        return new ResponseEntity<Funcionario>(funcionarioAntigo, HttpStatus.OK);
+        return new ResponseEntity<FuncionarioDto>(funcionarioAntigoDto, HttpStatus.OK);
     }
     
 }

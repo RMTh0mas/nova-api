@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.renan.minha_api_restful.entities.Empresa;
+import com.renan.minha_api_restful.dtos.EmpresaDto;
 import com.renan.minha_api_restful.services.EmpresaService;
 
 @RestController
@@ -26,63 +26,63 @@ public class EmpresaController {
 
     
     @GetMapping
-    public ResponseEntity<List<Empresa>> getAll() {
-        List<Empresa> listaEmpresa = service.getAll();
-        return new ResponseEntity<List<Empresa>>(listaEmpresa, HttpStatus.OK);
+    public ResponseEntity<List<EmpresaDto>> getAll() {
+        List<EmpresaDto> listaEmpresa = service.getAll();
+        return new ResponseEntity<List<EmpresaDto>>(listaEmpresa, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Empresa> getById(@PathVariable("id") long id) {
+    public ResponseEntity<EmpresaDto> getById(@PathVariable("id") long id) {
 
-        Empresa empresa = service.findById(id);
-        return new ResponseEntity<Empresa>(empresa, HttpStatus.OK);
+        EmpresaDto empresa = service.findById(id);
+        return new ResponseEntity<EmpresaDto>(empresa, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Empresa> insertEmpresa(@RequestBody Empresa empresa) {
+    public ResponseEntity<EmpresaDto> insertEmpresa(@RequestBody EmpresaDto empresa) {
         if (empresa.getId() == 0) {
             service.save(empresa);
-            return new ResponseEntity<Empresa>(empresa, HttpStatus.CREATED);
+            return new ResponseEntity<EmpresaDto>(empresa, HttpStatus.CREATED);
         }
         return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/razaoSocial/{razaoSocial}")
-    public ResponseEntity<List<Empresa>> getByRazaoSocial(@PathVariable("razaoSocial") String razaoSocial) {
-        List<Empresa> listaEmpresas = service.getByRazaoSocial(razaoSocial);
-        return new ResponseEntity<List<Empresa>>(listaEmpresas, HttpStatus.OK);
+    public ResponseEntity<List<EmpresaDto>> getByRazaoSocial(@PathVariable("razaoSocial") String razaoSocial) {
+        List<EmpresaDto> listaEmpresas = service.getByRazaoSocial(razaoSocial);
+        return new ResponseEntity<List<EmpresaDto>>(listaEmpresas, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Empresa> update(@PathVariable("id") long id,
-            @RequestBody Empresa empresa) {
+    public ResponseEntity<EmpresaDto> update(@PathVariable("id") long id,
+            @RequestBody EmpresaDto empresa) {
 
-        Empresa empresaAntiga = service.findById(id);
+        EmpresaDto empresaAntiga = service.findById(id);
         if (empresaAntiga == null) {
             return ResponseEntity.notFound().build();
         }
         
         empresaAntiga.setCnpj(empresa.getCnpj());
+        empresaAntiga.setRazaoSocial(empresa.getRazaoSocial());
         empresaAntiga.setDataCriacao(empresa.getDataCriacao());
         empresaAntiga.setDataAtualizacao(empresa.getDataAtualizacao());
         empresaAntiga.setFuncionarios(empresa.getFuncionarios());
-        empresaAntiga.setRazaoSocial(empresa.getRazaoSocial());
 
         service.save(empresaAntiga);
 
-        return new ResponseEntity<Empresa>(empresaAntiga, HttpStatus.OK);
+        return new ResponseEntity<EmpresaDto>(empresaAntiga, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Empresa> delete(@PathVariable("id") long id) {
+    public ResponseEntity<EmpresaDto> delete(@PathVariable("id") long id) {
 
-        Empresa empresaAntiga = service.findById(id);
+        EmpresaDto empresaAntiga = service.findById(id);
         if (empresaAntiga == null) {
             return ResponseEntity.notFound().build();
         }
         service.delete(empresaAntiga.getId());
 
-        return new ResponseEntity<Empresa>(empresaAntiga, HttpStatus.OK);
+        return new ResponseEntity<EmpresaDto>(empresaAntiga, HttpStatus.OK);
     }
 
     

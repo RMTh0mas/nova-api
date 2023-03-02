@@ -2,20 +2,20 @@ package com.renan.minha_api_restful.services;
 
 import java.util.List;
 
-import com.renan.minha_api_restful.entities.Empresa;
+import com.renan.minha_api_restful.dtos.EmpresaDto;
 
 public interface EmpresaService {
 
-    public List<Empresa> getAll();
+    public List<EmpresaDto> getAll();
 
-    public Empresa save(Empresa empresa);
+    public EmpresaDto save(EmpresaDto empresa);
 
-    public Empresa findById(Long id);
+    public EmpresaDto findById(Long id);
 
-    public Empresa findByCnpj(String cnpj);
+    public EmpresaDto findByCnpj(String cnpj);
 
-    public Empresa delete(Long id);
+    public EmpresaDto delete(Long id);
 
-    public List<Empresa> getByRazaoSocial(String razaoSocial);
+    public List<EmpresaDto> getByRazaoSocial(String razaoSocial);
     
 }

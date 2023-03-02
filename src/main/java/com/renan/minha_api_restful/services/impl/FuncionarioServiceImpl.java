@@ -2,10 +2,13 @@ package com.renan.minha_api_restful.services.impl;
 
 import java.util.List;
 
+import org.mapstruct.factory.Mappers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.renan.minha_api_restful.dtos.FuncionarioDto;
 import com.renan.minha_api_restful.entities.Funcionario;
+import com.renan.minha_api_restful.mappers.FuncionarioMapper;
 import com.renan.minha_api_restful.repositories.FuncionarioRepository;
 import com.renan.minha_api_restful.services.FuncionarioService;
 
@@ -15,36 +18,46 @@ public class FuncionarioServiceImpl implements FuncionarioService {
     @Autowired
     private FuncionarioRepository repository;
 
+    @Autowired
+    private FuncionarioMapper mapper;
+
     @Override
-    public List<Funcionario> getAll() {
-        return repository.findAll();
+    public List<FuncionarioDto> getAll() {
+        List<Funcionario> listaFuncionario = repository.findAll();
+        return mapper.mapListFuncionario(listaFuncionario);
     }
 
     @Override
-    public Funcionario save(Funcionario funcionario) {
-        return repository.save(funcionario);
+    public FuncionarioDto save(FuncionarioDto funcionariodto) {
+        Funcionario funcionario = mapper.mapFuncionarioDTO(funcionariodto);
+        funcionario = repository.save(funcionario);
+        return mapper.mapFuncionario(funcionario);
     }
 
     @Override
-    public Funcionario findById(Long id) {
-        return repository.findOne(id);
+    public FuncionarioDto findById(Long id) {
+        Funcionario funcionario = repository.findOne(id);
+        return mapper.mapFuncionario(funcionario);
     }
 
     @Override
-    public Funcionario findByCpf(String cpf) {
-        return repository.findByCpf(cpf);
+    public FuncionarioDto findByCpf(String cpf) {
+        Funcionario funcionario = repository.findByCpf(cpf);
+        return mapper.mapFuncionario(funcionario);
     }
 
     @Override
-    public Funcionario delete(Long id) {
-        Funcionario funcionarioDeletado = repository.findOne(id);
-        repository.delete(id);
-        return funcionarioDeletado;
+    public FuncionarioDto delete(Long id) {
+        Funcionario funcionario = repository.findOne(id);
+        repository.delete(funcionario);
+        return mapper.mapFuncionario(funcionario);
     }
 
     @Override
-    public List<Funcionario> getByName(String nome) {
-        return repository.findByNomeIgnoreCaseContaining(nome);
+    public List<FuncionarioDto> getByName(String nome) {
+        List<Funcionario> funcionario = repository.findByNomeIgnoreCaseContaining(nome);
+
+        return mapper.mapListFuncionario(funcionario);
     }
 
 

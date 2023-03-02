@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.renan.minha_api_restful.entities.Lancamento;
+import com.renan.minha_api_restful.dtos.LancamentoDto;
 import com.renan.minha_api_restful.services.LancamentoService;
 
 @RestController
@@ -25,38 +25,38 @@ public class LancamentoController {
     private LancamentoService service;
 
     @GetMapping
-    public ResponseEntity<List<Lancamento>> getAll() {
-        List<Lancamento> listaLancamento = service.getAll();
-        return new ResponseEntity<List<Lancamento>>(listaLancamento, HttpStatus.OK);
+    public ResponseEntity<List<LancamentoDto>> getAll() {
+        List<LancamentoDto> listaLancamento = service.getAll();
+        return new ResponseEntity<List<LancamentoDto>>(listaLancamento, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Lancamento> getById(@PathVariable("id") long id) {
+    public ResponseEntity<LancamentoDto> getById(@PathVariable("id") long id) {
 
-        Lancamento lancamento = service.findById(id);
-        return new ResponseEntity<Lancamento>(lancamento, HttpStatus.OK);
+        LancamentoDto lancamento = service.findById(id);
+        return new ResponseEntity<LancamentoDto>(lancamento, HttpStatus.OK);
     }
 
     @PostMapping
-    public ResponseEntity<Lancamento> insertEmpresa(@RequestBody Lancamento lancamento) {
+    public ResponseEntity<LancamentoDto> insertEmpresa(@RequestBody LancamentoDto lancamento) {
         if (lancamento.getId() == 0) {
             service.save(lancamento);
-            return new ResponseEntity<Lancamento>(lancamento, HttpStatus.CREATED);
+            return new ResponseEntity<LancamentoDto>(lancamento, HttpStatus.CREATED);
         }
         return ResponseEntity.badRequest().build();
     }
 
     @GetMapping("/descricao/{descricao}")
-    public ResponseEntity<List<Lancamento>> getByDescricao(@PathVariable("descricao") String descricao) {
-        List<Lancamento> listaLancamento = service.getByDescricao(descricao);
-        return new ResponseEntity<List<Lancamento>>(listaLancamento, HttpStatus.OK);
+    public ResponseEntity<List<LancamentoDto>> getByDescricao(@PathVariable("descricao") String descricao) {
+        List<LancamentoDto> listaLancamento = service.getByDescricao(descricao);
+        return new ResponseEntity<List<LancamentoDto>>(listaLancamento, HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Lancamento> update(@PathVariable("id") long id,
-            @RequestBody Lancamento lancamento) {
+    public ResponseEntity<LancamentoDto> update(@PathVariable("id") long id,
+            @RequestBody LancamentoDto lancamento) {
 
-        Lancamento lancamentoAntigo = service.findById(id);
+        LancamentoDto lancamentoAntigo = service.findById(id);
         if (lancamentoAntigo == null) {
             return ResponseEntity.notFound().build();
         }
@@ -69,19 +69,19 @@ public class LancamentoController {
         
         service.save(lancamentoAntigo);
 
-        return new ResponseEntity<Lancamento>(lancamentoAntigo, HttpStatus.OK);
+        return new ResponseEntity<LancamentoDto>(lancamentoAntigo, HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Lancamento> delete(@PathVariable("id") long id) {
+    public ResponseEntity<LancamentoDto> delete(@PathVariable("id") long id) {
 
-        Lancamento lancamentoAntigo = service.findById(id);
+        LancamentoDto lancamentoAntigo = service.findById(id);
         if (lancamentoAntigo == null) {
             return ResponseEntity.notFound().build();
         }
         service.delete(lancamentoAntigo.getId());
 
-        return new ResponseEntity<Lancamento>(lancamentoAntigo, HttpStatus.OK);
+        return new ResponseEntity<LancamentoDto>(lancamentoAntigo, HttpStatus.OK);
     }
     
 }

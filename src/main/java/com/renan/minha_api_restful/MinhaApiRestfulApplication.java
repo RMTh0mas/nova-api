@@ -32,13 +32,12 @@ public class MinhaApiRestfulApplication {
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
 
-	@Autowired
-	private Date c;
-
+	Date c = new Date(); 
+	
 	public static void main(String[] args) {
 		SpringApplication.run(MinhaApiRestfulApplication.class, args);
 	}
- 
+	
 	@Bean
 	public CommandLineRunner commandLineRunner(){
 		return args -> {
