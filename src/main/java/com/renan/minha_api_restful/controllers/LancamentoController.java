@@ -2,9 +2,12 @@ package com.renan.minha_api_restful.controllers;
 
 import java.util.List;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +18,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.renan.minha_api_restful.dtos.LancamentoDto;
+import com.renan.minha_api_restful.responses.Response;
 import com.renan.minha_api_restful.services.LancamentoService;
 
 @RestController
@@ -25,37 +29,52 @@ public class LancamentoController {
     private LancamentoService service;
 
     @GetMapping
-    public ResponseEntity<List<LancamentoDto>> getAll() {
+    public ResponseEntity<Response<List<LancamentoDto>>> getAll() {
+        Response<List<LancamentoDto>> response = new Response<List<LancamentoDto>>();
         List<LancamentoDto> listaLancamento = service.getAll();
-        return new ResponseEntity<List<LancamentoDto>>(listaLancamento, HttpStatus.OK);
+        response.setData(listaLancamento);
+        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<LancamentoDto> getById(@PathVariable("id") long id) {
+    public ResponseEntity<Response<LancamentoDto>> getById(@PathVariable("id") long id) {
+
+        Response<LancamentoDto> response = new Response<LancamentoDto>();
 
         LancamentoDto lancamento = service.findById(id);
-        return new ResponseEntity<LancamentoDto>(lancamento, HttpStatus.OK);
+        response.setData(lancamento);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping
-    public ResponseEntity<LancamentoDto> insertEmpresa(@RequestBody LancamentoDto lancamento) {
-        if (lancamento.getId() == 0) {
-            service.save(lancamento);
-            return new ResponseEntity<LancamentoDto>(lancamento, HttpStatus.CREATED);
+    public ResponseEntity<Response<LancamentoDto>> insertEmpresa(@Valid @RequestBody LancamentoDto lancamento, BindingResult result) {
+        
+        Response<LancamentoDto> response = new Response<LancamentoDto>();
+
+        if(result.hasErrors()){
+            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(response);
         }
-        return ResponseEntity.badRequest().build();
+
+        service.save(lancamento);
+        response.setData(lancamento);
+        return ResponseEntity.ok(response);
+        
     }
 
     @GetMapping("/descricao/{descricao}")
-    public ResponseEntity<List<LancamentoDto>> getByDescricao(@PathVariable("descricao") String descricao) {
+    public ResponseEntity<Response<List<LancamentoDto>>> getByDescricao(@PathVariable("descricao") String descricao) {
+        Response<List<LancamentoDto>> response = new Response<List<LancamentoDto>>();
         List<LancamentoDto> listaLancamento = service.getByDescricao(descricao);
-        return new ResponseEntity<List<LancamentoDto>>(listaLancamento, HttpStatus.OK);
+        response.setData(listaLancamento);
+        return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<LancamentoDto> update(@PathVariable("id") long id,
+    public ResponseEntity<Response<LancamentoDto>> update(@PathVariable("id") long id,
             @RequestBody LancamentoDto lancamento) {
-
+        
+        Response<LancamentoDto> response = new Response<LancamentoDto>();
         LancamentoDto lancamentoAntigo = service.findById(id);
         if (lancamentoAntigo == null) {
             return ResponseEntity.notFound().build();
@@ -68,20 +87,22 @@ public class LancamentoController {
         lancamentoAntigo.setLocalizacao(lancamento.getLocalizacao());
         
         service.save(lancamentoAntigo);
-
-        return new ResponseEntity<LancamentoDto>(lancamentoAntigo, HttpStatus.OK);
+        response.setData(lancamentoAntigo);
+        return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<LancamentoDto> delete(@PathVariable("id") long id) {
+    public ResponseEntity<Response<LancamentoDto>> delete(@PathVariable("id") long id) {
+
+        Response<LancamentoDto> response = new Response<LancamentoDto>();
 
         LancamentoDto lancamentoAntigo = service.findById(id);
         if (lancamentoAntigo == null) {
             return ResponseEntity.notFound().build();
         }
         service.delete(lancamentoAntigo.getId());
-
-        return new ResponseEntity<LancamentoDto>(lancamentoAntigo, HttpStatus.OK);
+        response.setData(lancamentoAntigo);
+        return ResponseEntity.ok(response);
     }
     
 }

@@ -4,6 +4,13 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.UniqueConstraint;
+
+import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.br.CPF;
+
 import com.renan.minha_api_restful.entities.Empresa;
 import com.renan.minha_api_restful.entities.Lancamento;
 import com.renan.minha_api_restful.enums.PerfilEnum;
@@ -33,7 +40,9 @@ public class FuncionarioDto {
     public void setId(Long id) {
         this.id = id;
     }
-
+    
+    @NotEmpty(message = "O nome não pode ser vazio.")
+    @Length(min = 3, max = 200, message = "nome deve conter entre 3 e 100 caracteres.")
     public String getNome() {
         return nome;
     }
@@ -42,6 +51,8 @@ public class FuncionarioDto {
         this.nome = nome;
     }
 
+    @NotEmpty(message = "O e-mail não pode ser vazio.")
+    @Email(message = "e-mail inválido")
     public String getEmail() {
         return email;
     }
@@ -50,6 +61,8 @@ public class FuncionarioDto {
         this.email = email;
     }
 
+    @NotEmpty(message = "CPF não pode ser vazio.")
+    @CPF(message = "CPF inválido")
     public String getCpf() {
         return cpf;
     }
