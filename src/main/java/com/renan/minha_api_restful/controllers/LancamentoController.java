@@ -71,13 +71,19 @@ public class LancamentoController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Response<LancamentoDto>> update(@PathVariable("id") long id,
-            @RequestBody LancamentoDto lancamento) {
+    public ResponseEntity<Response<LancamentoDto>> update(@Valid @PathVariable("id") long id,
+            @RequestBody LancamentoDto lancamento, BindingResult result) {
         
         Response<LancamentoDto> response = new Response<LancamentoDto>();
+
         LancamentoDto lancamentoAntigo = service.findById(id);
         if (lancamentoAntigo == null) {
             return ResponseEntity.notFound().build();
+        }
+
+        if(result.hasErrors()){
+            result.getAllErrors().forEach(error -> response.getErrors().add(error.getDefaultMessage()));
+            return ResponseEntity.badRequest().body(response);
         }
         
         lancamentoAntigo.setDescricao(lancamento.getDescricao());

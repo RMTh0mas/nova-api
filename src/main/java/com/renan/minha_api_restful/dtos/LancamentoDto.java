@@ -2,6 +2,11 @@ package com.renan.minha_api_restful.dtos;
 
 import java.util.Date;
 
+import javax.validation.constraints.Future;
+
+import org.hibernate.validator.constraints.Length;
+import org.hibernate.validator.constraints.NotEmpty;
+
 import com.renan.minha_api_restful.entities.Funcionario;
 import com.renan.minha_api_restful.enums.TipoEnum;
 
@@ -22,12 +27,17 @@ public class LancamentoDto {
     public void setId(Long id) {
         this.id = id;
     }
+
+    @Future(message = "A data inválida")
     public Date getData() {
         return data;
     }
     public void setData(Date data) {
         this.data = data;
     }
+
+    @NotEmpty(message = "O nome não pode ser vazio.")
+    @Length(min = 3, max = 200, message = "nome deve conter entre 3 e 100 caracteres.")
     public String getDescricao() {
         return descricao;
     }
