@@ -72,7 +72,7 @@ public class Funcionario {
         this.email = email;
     }
 
-    @Column(name = "cpf", nullable = false)
+    @Column(name = "cpf", nullable = false, unique = true)
     public String getCpf() {
         return cpf;
     }

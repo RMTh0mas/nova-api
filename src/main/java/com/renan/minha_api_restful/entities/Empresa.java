@@ -51,7 +51,7 @@ public class Empresa implements Serializable {
         this.razaoSocial = razaoSocial;
     }
 
-    @Column(name = "cnpj", nullable = false)
+    @Column(name = "cnpj", nullable = false, unique = true)
     public String getCnpj() {
         return cnpj;
     }

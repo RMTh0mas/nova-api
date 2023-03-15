@@ -4,6 +4,8 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import com.renan.minha_api_restful.entities.Usuario;
+import com.renan.minha_api_restful.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -31,6 +33,9 @@ public class MinhaApiRestfulApplication {
 
 	@Autowired
 	private LancamentoRepository lancamentoRepository;
+
+	@Autowired
+	private UsuarioRepository usuarioRepository;
 
 	Date c = new Date(); 
 	
@@ -78,7 +83,7 @@ public class MinhaApiRestfulApplication {
 			funcionario1.setEmail("zezin@gmail.com");
 			funcionario1.setCpf("139.625.086-78");
 			funcionario1.setSenha("teste123");
-			funcionario1.setPerfil(PerfilEnum.ROLE_ADMIN);
+			funcionario1.setPerfil(PerfilEnum.ADMIN);
 
 			this.funcionarioRepository.save(funcionario1);
 
@@ -90,6 +95,15 @@ public class MinhaApiRestfulApplication {
 			lancamento1.setTipo(TipoEnum.INICIO_ALMOCO);
 
 			this.lancamentoRepository.save(lancamento1);
+
+			Usuario usuario1 = new Usuario();
+			senhaEncriptada = SenhaUtils.gerarBCript("LaloSalamanca");
+
+			usuario1.setUsername("renan");
+			usuario1.setPassword(senhaEncriptada);
+			System.out.println(senhaEncriptada);
+
+			this.usuarioRepository.save(usuario1);
 
 		
 		}; 
