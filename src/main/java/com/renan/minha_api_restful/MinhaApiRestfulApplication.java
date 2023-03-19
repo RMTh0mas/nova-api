@@ -1,26 +1,23 @@
 package com.renan.minha_api_restful;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-import com.renan.minha_api_restful.entities.Usuario;
-import com.renan.minha_api_restful.repositories.UsuarioRepository;
+import com.renan.minha_api_restful.entities.*;
+import com.renan.minha_api_restful.repositories.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
-import com.renan.minha_api_restful.entities.Empresa;
-import com.renan.minha_api_restful.entities.Funcionario;
-import com.renan.minha_api_restful.entities.Lancamento;
 import com.renan.minha_api_restful.enums.PerfilEnum;
 import com.renan.minha_api_restful.enums.TipoEnum;
-import com.renan.minha_api_restful.repositories.EmpresaRepository;
-import com.renan.minha_api_restful.repositories.FuncionarioRepository;
-import com.renan.minha_api_restful.repositories.LancamentoRepository;
 import com.renan.minha_api_restful.utils.SenhaUtils;
+
+import javax.persistence.EntityManager;
 
 @SpringBootApplication
 public class MinhaApiRestfulApplication {
@@ -36,6 +33,9 @@ public class MinhaApiRestfulApplication {
 
 	@Autowired
 	private UsuarioRepository usuarioRepository;
+
+	@Autowired
+	private UsuarioRoleRepository usuarioRoleRepository;
 
 	Date c = new Date(); 
 	
@@ -97,13 +97,37 @@ public class MinhaApiRestfulApplication {
 			this.lancamentoRepository.save(lancamento1);
 
 			Usuario usuario1 = new Usuario();
-			senhaEncriptada = SenhaUtils.gerarBCript("LaloSalamanca");
+			senhaEncriptada = SenhaUtils.gerarBCript("renan123");
 
 			usuario1.setUsername("renan");
 			usuario1.setPassword(senhaEncriptada);
-			System.out.println(senhaEncriptada);
+
+			UsuarioRole usuarioRole = new UsuarioRole();
+			usuarioRole.setRole(PerfilEnum.ADMIN);
+			this.usuarioRoleRepository.save(usuarioRole);
+
+			List<UsuarioRole> lista = new ArrayList<UsuarioRole>();
+			lista.add(usuarioRole);
+			usuario1.setAuthorities(lista);
 
 			this.usuarioRepository.save(usuario1);
+
+			Usuario usuario2 = new Usuario();
+			senhaEncriptada = SenhaUtils.gerarBCript("ramon123");
+
+			usuario2.setUsername("ramon");
+			usuario2.setPassword(senhaEncriptada);
+			usuarioRole.setRole(PerfilEnum.USER);
+
+			this.usuarioRoleRepository.save(usuarioRole);
+
+			lista.add(usuarioRole);
+			usuario2.setAuthorities(lista);
+
+			this.usuarioRepository.save(usuario2);
+
+
+
 
 		
 		}; 

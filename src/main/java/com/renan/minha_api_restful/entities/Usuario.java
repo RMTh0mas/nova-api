@@ -24,6 +24,12 @@ public class Usuario implements UserDetails {
     @Column(name = "password", nullable = false)
     private String password;
 
+    @ManyToMany
+    @JoinTable(name = "user_roles",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "role_id"))
+    private List<UsuarioRole> roles;
+
     public Long getId() {
         return id;
     }
@@ -62,7 +68,11 @@ public class Usuario implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return null;
+        return this.roles;
+    }
+
+    public void setAuthorities(List<UsuarioRole> roles) {
+        this.roles = roles;
     }
 
     public String getPassword() {
