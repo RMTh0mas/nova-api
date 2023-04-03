@@ -18,7 +18,7 @@ public class LancamentoDto {
     private String localizacao;
     private Date dataCriacao;
     private Date dataAtualizacao;
-    private TipoEnum tipo;
+    private String tipo;
     private Funcionario funcionario;
     
     public Long getId() {
@@ -62,10 +62,10 @@ public class LancamentoDto {
     public void setDataAtualizacao(Date dataAtualizacao) {
         this.dataAtualizacao = dataAtualizacao;
     }
-    public TipoEnum getTipo() {
+    public String getTipo() {
         return tipo;
     }
-    public void setTipo(TipoEnum tipo) {
+    public void setTipo(String tipo) {
         this.tipo = tipo;
     }
     public Funcionario getFuncionario() {

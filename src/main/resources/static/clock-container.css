@@ -1,0 +1,15 @@
+@font-face {
+    font-family: 'DigitalRenan';
+    src: url('digital-7.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+
+}
+
+
+#clock-container{
+    font-family: 'DigitalRenan';
+    color: #2ca0f9;
+    font-size: 8em;
+    text-align: center;
+}

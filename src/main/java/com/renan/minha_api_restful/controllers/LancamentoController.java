@@ -4,8 +4,10 @@ import java.util.List;
 
 import javax.validation.Valid;
 
+import com.renan.minha_api_restful.enums.TipoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -28,6 +30,8 @@ public class LancamentoController {
     @Autowired
     private LancamentoService service;
 
+    private TipoEnum enums;
+
     @GetMapping
     public ResponseEntity<Response<List<LancamentoDto>>> getAll() {
         Response<List<LancamentoDto>> response = new Response<List<LancamentoDto>>();
@@ -46,8 +50,8 @@ public class LancamentoController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping
-    public ResponseEntity<Response<LancamentoDto>> insertEmpresa(@Valid @RequestBody LancamentoDto lancamento, BindingResult result) {
+    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
+    public ResponseEntity<Response<LancamentoDto>> insertLancamento(@Valid @RequestBody LancamentoDto lancamento, BindingResult result) {
         
         Response<LancamentoDto> response = new Response<LancamentoDto>();
 

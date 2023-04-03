@@ -3,6 +3,7 @@ package com.renan.minha_api_restful.mappers.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.renan.minha_api_restful.enums.TipoEnum;
 import org.springframework.stereotype.Component;
 
 import com.renan.minha_api_restful.dtos.LancamentoDto;
@@ -31,7 +32,7 @@ public class LancamentoMapperImpl implements LancamentoMapper {
         lancamentoDto.setLocalizacao(lancamento.getLocalizacao());
         lancamentoDto.setDataCriacao(lancamento.getDataCriacao());
         lancamentoDto.setDataAtualizacao(lancamento.getDataAtualizacao());
-        lancamentoDto.setTipo(lancamento.getTipo());
+        lancamentoDto.setTipo(lancamento.getTipo().name());
         lancamentoDto.setFuncionario(lancamento.getFuncionario());
         return lancamentoDto;
     }
@@ -46,7 +47,16 @@ public class LancamentoMapperImpl implements LancamentoMapper {
         lancamento.setLocalizacao(lancamentoDto.getLocalizacao());
         lancamento.setDataCriacao(lancamentoDto.getDataCriacao());
         lancamento.setDataAtualizacao(lancamentoDto.getDataAtualizacao());
-        lancamento.setTipo(lancamentoDto.getTipo());
+
+        // obtem o valor do tipo de lançamento do DTO
+        String tipoLancamento = lancamentoDto.getTipo();
+
+        // converter o valor para o tipo de enum correspondente
+        TipoEnum enums = TipoEnum.valueOf(tipoLancamento);
+
+        // define o valor do enum no objeto Lancamento
+        lancamento.setTipo(enums);
+
         lancamento.setFuncionario(lancamentoDto.getFuncionario());
         return lancamento;
     }
