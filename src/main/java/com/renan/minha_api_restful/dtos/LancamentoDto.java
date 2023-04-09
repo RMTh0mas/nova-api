@@ -28,7 +28,6 @@ public class LancamentoDto {
         this.id = id;
     }
 
-    @Future(message = "A data inválida")
     public Date getData() {
         return data;
     }

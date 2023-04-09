@@ -11,8 +11,6 @@
 
     <link rel="stylesheet" th:href="@{bootstrap.min.css}" />
 
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" integrity="sha256-kLaT2GOSpHechhsozzB+flnD+zUyjE2LlfWPgU04xyI=" crossorigin="" />
-
     <!-- Favicons -->
     <link rel="apple-touch-icon" th:href="@{relogio2.png}" sizes="180x180"/>
     <link rel="icon" th:href="@{relogio2.png}" sizes="32x32" type="image/png"/>
@@ -101,6 +99,7 @@
     <link th:href="@{navbars-offcanvas.css}" rel="stylesheet"/>
     <link th:href="@{clock-container.css}" rel="stylesheet"/>
     <link th:href="@{current-date.css}" rel="stylesheet"/>
+
 </head>
 <body>
 <svg xmlns="http://www.w3.org/2000/svg" style="display: none">
@@ -253,7 +252,7 @@
 <div th:text="${location}">Carregando localização...</div>
 
 <main class="form-signin m-auto mx-auto d-flex justify-content-center align-items-center" style="max-width: 500px;">
-    <form id="meu-formulario">
+    <form id="meu-formulario" action="/api/v1/lancamento" method="post">
 
         <input type="hidden" name="descricao" value="Registro de ponto" />
         <input type="hidden" name="data" id="data" value="" />
@@ -271,30 +270,30 @@
     </form>
 </main>
 
-<script>
-    const form = document.querySelector('#meu-formulario');
+<script th:src="@{/unfetch.js}"></script>
 
-    form.addEventListener('submit', async (event) => {
+<script th:src="@{/bootstrap.bundle.min.js}"></script>
+
+<script>
+
+        const form = document.querySelector('#meu-formulario');
+
+        form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const formData = new FormData(form);
         const lancamento = Object.fromEntries(formData.entries());
 
         const response = await fetch('/api/v1/lancamento', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(lancamento)
+        method: 'POST',
+        headers: {
+        'Content-Type': 'application/json' // atualizar o tipo de mídia aqui
+        },
+        body: JSON.stringify(lancamento)
         });
 
-        // faça algo com a resposta...
-    });
+});
 </script>
-
-<script th:src="@{/bootstrap.bundle.min.js}"></script>
-
-<script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js" integrity="sha256-WBkoXOwTeyKclOHuWtc+i2uENFpDZ9YPdf5Hf+D7ewM=" crossorigin=""></script>
 
 <script>
     function updateClock() {

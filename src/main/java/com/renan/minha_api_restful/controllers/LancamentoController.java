@@ -1,11 +1,14 @@
 package com.renan.minha_api_restful.controllers;
 
+import java.net.URI;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 import com.renan.minha_api_restful.enums.TipoEnum;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -50,9 +53,9 @@ public class LancamentoController {
         return ResponseEntity.ok(response);
     }
 
-    @PostMapping(consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-    public ResponseEntity<Response<LancamentoDto>> insertLancamento(@Valid @RequestBody LancamentoDto lancamento, BindingResult result) {
-        
+    @PostMapping
+    public ResponseEntity<Response<LancamentoDto>> insertLancamento(@Valid @RequestBody LancamentoDto lancamento, BindingResult result, HttpServletRequest request) {
+
         Response<LancamentoDto> response = new Response<LancamentoDto>();
 
         if(result.hasErrors()){
@@ -62,7 +65,13 @@ public class LancamentoController {
 
         service.save(lancamento);
         response.setData(lancamento);
-        return ResponseEntity.ok(response);
+
+        // Redirecionamento para outra tela
+        String redirectUrl = "http://localhost:8080/login";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create(redirectUrl));
+
+        return new ResponseEntity<Response<LancamentoDto>>(response, headers, HttpStatus.CREATED);
         
     }
 
